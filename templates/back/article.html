@@ -1,0 +1,205 @@
+{% extends 'back/base_main.html' %}
+
+{% block title %}
+    文章 - 大锤博客
+{% endblock %}
+
+
+{% block link %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='back/css/font-awesome.min.css') }}">
+{% endblock %}
+
+{% block diff_div %}
+    <div class="row">
+        <aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="/back/index">报告</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="/back/article">文章</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="/back/category">栏目</a></li>
+            </ul>
+        </aside>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <form action="back/article" method="post">
+                <h1 class="page-header">操作</h1>
+                <ol class="breadcrumb">
+                    <li><a href="/back/add_article">增加文章</a></li>
+                </ol>
+                <h1 class="page-header">管理
+                    <span class="badge">
+                        {% if ( article_list | length )>6 %}
+                        7
+                        {% else %}
+                         {{ article_list | length }}
+                        {% endif %}
+                    </span>
+                </h1>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">选择</span>
+                                </th>
+                                <th><span class="glyphicon glyphicon-file"></span> <span class="visible-lg">标题</span></th>
+                                <th><span class="glyphicon glyphicon-list"></span> <span class="visible-lg">栏目</span></th>
+                                <th class="hidden-sm"><span class="glyphicon glyphicon-tag"></span> <span
+                                        class="visible-lg">标签</span></th>
+                                <th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span> <span
+                                        class="visible-lg">评论</span></th>
+                                <th><span class="glyphicon glyphicon-time"></span> <span class="visible-lg">日期</span></th>
+                                <th><span class="glyphicon glyphicon-pencil"></span> <span class="visible-lg">操作</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabArticle">
+                        {% for article in article_list %}
+                        <tr>
+                            <td><input type="checkbox" class="input-control" name="checkbox[]" value="{{ article.article_id }}"/></td>
+                            <td class="article-title">{{ article.article_title }}</td>
+                            <td>{{ article.category_id }}</td>
+                            <td class="hidden-sm">{{ article.article_label }}</td>
+                            <td class="hidden-sm">0</td>
+                            <td>{{ article.write_time }}</td>
+                            <td>
+                                <a class="update" href="{{ url_for('back.update_article', article_id=article.article_id) }}">修改</a>
+                                {# <a class="delete" href="{{ url_for('back.del_article', article_id=article.article_id) }}">删除</a> #}
+                                <a class="delete" href="javascript:;">删除</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="message_footer">
+                    <nav>
+                        <div class="btn-toolbar operation" role="toolbar">
+                            <div class="btn-group" role="group"><a class="btn btn-default" onClick="select()">全选</a> <a
+                                    class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default"
+                                                                                          onClick="noselect()">不选</a>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="submit" class="btn btn-default" data-toggle="tooltip"
+                                        data-placement="bottom" title="删除全部选中" name="checkbox_delete"
+                                        href="javascript:;">删除
+                                </button>
+                            </div>
+                        </div>
+                        <ul id='page_ul' class="pagination pagenav">
+                            <li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a>
+                            </li>
+                            {% for i in page_list %}
+                            <li {% if i==1 %} class="active" {% endif %} name="page"><a href="javascript:;" class="page_a">{{ i }}</a></li>
+                            {% endfor %}
+                            <li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a></li>
+                        </ul>
+                    </nav>
+                </footer>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block login_section %}
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='back/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='back/js/admin-scripts.js') }}"></script>
+<script>
+    //是否确认删除
+    $(function () {
+        $('.input-control').click(function () {
+            console.log($(this).is(':checked'));
+        });
+    });
+    function update_data(data, operation) {
+        console.log(666);
+            var len = 0;
+            $("#tabArticle").empty();
+                if (operation === 'delete') {
+                    len = Object.keys(data).length - 1;
+                    console.log("delete"+len)
+                }
+                else {
+                    len = Object.keys(data).length;
+                    console.log("update"+len)
+                }
+                for(var i=0; i<len && i<7; i++){
+                    console.log(data[i].article_id);
+                    var article_id = data[i].article_id;
+                    var article_title = data[i].article_title;
+                    var category_id = data[i].category_id;
+                    var article_label = data[i].article_label;
+                    var write_time = data[i].write_time;
+                    var tr = $('<tr></tr>').appendTo('tbody');
+                    var td_checkbox = $('<td><input type="checkbox" class="input-control" name="checkbox[]" value="'+ article_id +'"/></td>');
+                    var td_title = $('<td class="article-title">' + article_title + '</td>');
+                    var td_category_id = $('<td>' + category_id + '</td>');
+                    var td_label = $('<td class="hidden-sm">'+ article_label + '</td>');
+                    var td_write_time = $('<td class="hidden-sm">0</td> <td>'+write_time + '</td>');
+                    var update = $('<td> <a class="update" href="/back/update_article/' + article_id + '/">修改</a> <a class="delete" href="javascript:;">删除</a> </td>');
+                    td_checkbox.appendTo(tr);
+                    td_title.appendTo(tr);
+                    td_category_id.appendTo(tr);
+                    td_label.appendTo(tr);
+                    td_write_time.appendTo(tr);
+                    update.appendTo(tr);
+                }
+                console.log(len);
+                $('form h1 span').html(len)
+        }
+
+    $("#tabArticle").on('click','.delete', function () {
+            index = $('.delete').index();
+            article_id = $('.input-control').get(index-1).value;
+                $.ajax({
+                url:'{{ url_for("back.article") }}',
+                type:"post",
+                contentType:"application/json",
+                dataType:"json",
+                data:{'article_id': article_id },
+                success:function(data){
+                    operation = 'delete';
+                    update_data(data, operation);
+                    page_count = data['page_count'];
+                    $('#page_ul').empty();
+                    $('<li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>').appendTo('footer nav ul');
+                    for(var i=1; i<=page_count; i++){
+                        if (i === 1) {
+                            $('<li class="active" name="page"><a href="javascript:;" class="page_a">' + i + '</a></li>').appendTo('footer nav ul')
+                        }
+                    }
+                    $('<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a></li>').appendTo('footer nav ul');
+
+                },
+                error:function(){
+
+                }
+                });
+        });
+
+    $('#page_ul').on('click', '.page_a' , function () {
+            // 清除样式
+            $('#page_ul li').removeClass('active');
+            //给点击的li添加样式
+            $(this).context.parentNode.className = 'active';
+            $.ajax({
+            type: 'post',
+            url: '{{ url_for("back.article") }}',
+            data:{'page': $(this).text()},
+            dataType: 'json',
+            success: function (data , ){
+                operation = 'update';
+                update_data(data,operation);
+            },
+            error: function (data) {
+
+            }
+        })
+        });
+</script>
+{% endblock %}
+
+

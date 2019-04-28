@@ -1,0 +1,59 @@
+{% extends '/web/base.html' %}
+
+{% block body %}
+<article>
+    <aside class="l_box">
+        <div class="about_me">
+        <h2>关于我</h2>
+        <ul>
+          <i><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556206795520&di=ee3b71fa0fe4581cdd451b55aad0311c&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FsEASH2VMkmHh97YtcUHDDiwdZp8p3maLAQNVoIXmZniue1534558778715.jpg"></i>
+          <p><b>老王</b>，一个名不见，经不撰，其貌不扬，身高不到七尺但却拥有一个有趣的灵魂的码农</p>
+        </ul>
+      </div>
+        <div class="wdxc">
+            <h2>我的相册</h2>
+            <ul>
+                <li><a href="/"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1556196786&di=436eb69e368754c188cf631149f52597&src=http://img.mp.itc.cn/upload/20160406/1800ba2dc7c6487d9d0f35720c2f15f6_th.png"></a></li>
+                <li><a href="/"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1556196786&di=2f2a9d2c2b78173f39e4f4899888be67&src=http://n.sinaimg.cn/sinacn/20170822/6fd8-fykcypq3405231.jpg"></a></li>
+                <li><a href="/"><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2167770039,657517411&fm=26&gp=0.jpg"></a></li>
+                <li><a href="/"><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2167770039,657517411&fm=26&gp=0.jpg"></a></li>
+                <li><a href="/"><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2167770039,657517411&fm=26&gp=0.jpg"></a></li>
+                <li><a href="/"><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2167770039,657517411&fm=26&gp=0.jpg"></a></li>
+            </ul>
+        </div>
+        <div class="search">
+            <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
+                <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词"
+                       style="color: rgb(153, 153, 153);"
+                       onfocus="if(value==='请输入关键字词'){this.style.color='#000';value=''}"
+                       onblur="if(value===''){this.style.color='#999';value='请输入关键字词'}" type="text">
+                <input name="show" value="title" type="hidden">
+                <input name="tempid" value="1" type="hidden">
+                <input name="tbname" value="news" type="hidden">
+                <input name="Submit" class="input_submit" value="搜索" type="submit">
+            </form>
+        </div>
+        <div class="fenlei">
+            <h2>文章分类</h2>
+            <ul>
+              {% for category in category_list %}
+              <li>
+                <a href="{{ url_for('web.info_content', category_id=category.category_id) }}"
+                   name="article_category">{{ category.category_name }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+        </div>
+    </aside>
+    <main class="r_box">
+        <div class="about">
+            <p>王大锤<br/>
+            <br/>
+            <br/>
+        </div>
+    </main>
+</article>
+{% endblock %}
+
+

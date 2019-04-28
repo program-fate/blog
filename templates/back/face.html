@@ -1,0 +1,109 @@
+{% extends 'back/base_main.html' %}
+
+{% block title %}
+    登录
+{% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" type="text/css" href="../../static/back/css/login.css">
+{% endblock %}
+
+
+{% block section %}
+{% endblock %}
+
+
+{% block form %}
+    <span id="openMedia" style="position: fixed; top: 60px; left: 100px; border: red solid 1px">
+        <video id="video" height="200px" width="200px"></video>
+    </span>
+        <input type="button" value="开启摄像头" onclick="getMedia()" style="position: fixed; top: 270px; left: 100px;">
+    <span id="takePhoto" style="position: fixed; top: 300px; left: 100px; border: red solid 1px">
+        <canvas id="canvas" width="200px" height="200px"></canvas>
+    </span>
+        <input type="button" value="拍照" onclick="takePhoto()" style="position: fixed; top: 510px; left: 100px;">
+    <form action="/back/face/" method="post" autocomplete="off" class="form-signin">
+        <p><input type="hidden" id="face" name="face"></p>
+        <h2 class="form-signin-heading">
+            登录
+        </h2>
+        <div style="color: blue; font-size: 10px;">
+            {{ success }}
+        </div>
+        <label for="userName" class="sr-only">用户名</label>
+        <input type="text" id="userName" name="username" class="form-control" placeholder="请输入用户名" required autofocus autocomplete="off" maxlength="10" style="margin-bottom: 20px">
+        <div style="color: red; font-size: 10px;">
+            {{ error }}
+        </div>
+        <a href="/back/main">
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="signinSubmit">登录</button>
+        </a>
+    </form>
+    <div class="footer">
+            <p>
+                <a href="/back/register" title="注册" style="margin-right: 40px">前往注册
+                </a>
+                <a href="/back/login" title="账号密码登录" style="margin-right: 50px">账号密码登录
+                </a>
+                <a href="/back/index" data-toggle="tooltip" data-placement="left" title="不知道自己在哪?">回到后台 →
+                </a>
+            </p>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+<script src="../../static/back/js/bootstrap.min.js"></script>
+<script>
+    $('[data-toggle="tooltip"]').tooltip();
+    window.oncontextmenu = function () {
+        //return false;
+    };
+    $('.siteIcon img').click(function () {
+        window.location.reload();
+    });
+    $('#signinSubmit').click(function () {
+        if ($('#userName').val() === '') {
+            $(this).text('请输入用户名');
+        } else if ($('#face').val() === '') {
+            $(this).text('请进行人脸识别');
+        } else {
+            $(this).text('请稍后...');
+        }
+    });
+
+    function getMedia() {
+            let constraints = {
+                video: {width: 200, height: 200},
+                audio: true
+            };
+            //获得video摄像头区域
+            let video = document.getElementById("video");
+            //这里介绍新的方法，返回一个 Promise对象
+            // 这个Promise对象返回成功后的回调函数带一个 MediaStream 对象作为其参数
+            // then()是Promise对象里的方法
+            // then()方法是异步执行，当then()前的方法执行完后再执行then()内部的程序
+            // 避免数据没有获取到
+            let promise = navigator.mediaDevices.getUserMedia(constraints);
+            promise.then(function (MediaStream) {
+                video.srcObject = MediaStream;
+                video.play();
+            });
+        }
+
+      function takePhoto() {
+      //获得Canvas对象
+      let video = document.getElementById("video");
+      let canvas = document.getElementById("canvas");
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, 200, 200);
+        var face = $('#face');
+        var canvas1 = document.getElementById('canvas');
+        face.val(canvas1.toDataURL('image/png'))
+      }
+</script>
+{% endblock %}
+
+
+
+

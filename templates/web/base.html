@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    {% block head %}
+        <title>首页_王大锤个人博客 - 一个升职加薪，当上总经理，出任CEO，迎娶白富美的技术宅的个人博客网站</title>
+        <meta name="keywords" content="个人博客,王大锤个人博客,个人博客模板,王大锤"/>
+        <meta name="description" content="王大锤个人博客"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/web/css/base.css" rel="stylesheet">
+        <link href="/static/web/css/index.css" rel="stylesheet">
+        <link href="/static/web/css/m.css" rel="stylesheet">
+        <script src="/static/web/js/jquery.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="/static/web/js/comm.js"></script>
+        <!--[if lt IE 9]>
+        <script src="/static/web/js/modernizr.js"></script>
+        <![endif]-->
+    {% endblock %}
+
+</head>
+<body>
+{% block header %}
+    <header class="header-navigation" id="header">
+        <nav>
+            <div class="logo"><a href="javascript:;">王大锤个人博客</a></div>
+            <h2 id="mnavh"><span class="navicon"></span></h2>
+            <ul id="starlist">
+                <li><a href="/web/index">网站首页</a></li>
+                <li><a href="/web/list">我的日记</a></li>
+                <li><a href="/web/about">关于我</a></li>
+                <li><a href="/web/info">内容页</a></li>
+            </ul>
+        </nav>
+    </header>
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}
+
+<footer>
+    {% block footer %}
+        <p>Design by <a href="#" target="_blank">王大锤个人博客</a></p>
+    {% endblock %}
+</footer>
+{% block last %}
+    <a href="#" class="cd-top">Top</a>
+{% endblock %}
+
+
+</body>
+</html>
+
+
+

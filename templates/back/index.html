@@ -1,0 +1,170 @@
+{% extends 'back/base_main.html' %}
+
+{% block title %}
+    大锤博客
+{% endblock %}
+
+
+{% block link %}
+<link rel="stylesheet" type="text/css" href="../../static/back/css/font-awesome.min.css">
+{% endblock %}
+
+{% block diff_div %}
+      <div class="row">
+        <aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li  class="active"><a href="/back/index">报告</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="/back/article">文章</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="/back/category">栏目</a></li>
+            </ul>
+        </aside>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <h1 class="page-header">信息总览</h1>
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>文章</h4>
+                    <span class="text-muted">{{ article_list | length }} 条</span></div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>评论</h4>
+                    <span class="text-muted">0 条</span></div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>友链</h4>
+                    <span class="text-muted">0 条</span></div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>访问量</h4>
+                    <span class="text-muted">0</span></div>
+            </div>
+            <h1 class="page-header">状态</h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <tbody>
+                    <tr>
+                        <td>登录者: <span>{{ request.username }}</span>，这是您第 <span>{{ request.login_num }}</span> 次登录</td>
+                    </tr>
+                    <tr>
+                        <td>上次登录时间: {{ request.last_login_time }} , 上次登录IP: {{ request.last_login_ip }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h1 class="page-header">系统信息</h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>管理员个数:</td>
+                        <td>{{ user_list | length }} 人</td>
+                        <td>服务器软件:</td>
+                        <td>Apache/2.4.10 (Win32) OpenSSL/1.0.1i mod_fcgid/2.3.9</td>
+                    </tr>
+                    <tr>
+                        <td>浏览器:</td>
+                        <td id="browser_name"></td>
+                        <td>浏览器版本:</td>
+                        <td id="browser_version"></td>
+                    </tr>
+                    <tr>
+                        <td>操作系统:</td>
+                        <td>Windows 10</td>
+                        <td>PHP运行方式:</td>
+                        <td>CGI-FCGI</td>
+                    </tr>
+                    <tr>
+                        <td>登录者IP:</td>
+                        <td>{{ request.login_ip }}</td>
+                        <td>MYSQL版本:</td>
+                        <td>5.5.40</td>
+                    </tr>
+                    <tr>
+                        <td>程序版本:</td>
+                        <td class="version">YlsatCMS 1.0 <font size="-6" color="#BBB">(20160108160215)</font></td>
+                        <td>上传文件:</td>
+                        <td>可以 <font size="-6" color="#BBB">(最大文件：2M ，表单：8M )</font></td>
+                    </tr>
+                    <tr>
+                        <td>程序编码:</td>
+                        <td>UTF-8</td>
+                        <td>当前时间:</td>
+                        <td id="sys_time"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr></tr>
+                    </tfoot>
+                </table>
+            </div>
+            <footer>
+                <h1 class="page-header">程序信息</h1>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <tbody>
+                        <tr>
+                            <td><span style="display:inline-block; width:8em">版权所有</span> POWERED BY WY ALL RIGHTS
+                                RESERVED
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </footer>
+        </div>
+      </div>
+{% endblock %}
+
+{% block login_section %}
+{% endblock %}
+
+{% block js %}
+<script src="../../static/back/js/bootstrap.min.js"></script>
+<script src="../../static/back/js/admin-scripts.js"></script>
+<script type="text/javascript">
+    function getBrowserInfo(){
+        var Sys = {};
+        var ua = navigator.userAgent.toLowerCase();
+        var re =/(msie|firefox|chrome|opera|version).*?([\d.]+)/;
+        var m = ua.match(re);
+        Sys.browser = m[1].replace(/version/, "'safari");
+        Sys.ver = m[2];
+        return Sys;
+    }
+   //获取当前的浏览器信息
+   var sys = getBrowserInfo();
+   //sys.browser得到浏览器的类型，sys.ver得到浏览器的版本
+   // console.log(sys.browser + "的版本是：" + sys.ver);
+    $('#browser_name').html(sys.browser);
+    $('#browser_version').html(sys.ver);
+
+    // 递归刷新系统时间
+    getCode();
+    function getCode(){
+        i = self.setInterval("countdown()", 1000);
+    }
+    function countdown() {
+      var myDate = new Date();
+        //获取当前年
+        var year=myDate.getFullYear();
+        //获取当前月
+        var month=myDate.getMonth()+1;
+        //获取当前日
+        var date=myDate.getDate();
+        var h=myDate.getHours();       //获取当前小时数(0-23)
+        var m=myDate.getMinutes();     //获取当前分钟数(0-59)
+        var s=myDate.getSeconds();
+        var now=year+'-'+getNow(month)+"-"+getNow(date)+" "+getNow(h)+':'+getNow(m)+":"+getNow(s);
+        // 赋值给展示时间
+        $('#sys_time').html(now);
+    }
+    // 获取当前时间
+    function getNow(s) {
+      return s < 10 ? '0' + s: s;
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends '/web/base.html' %}
+
+{% block body %}
+<article>
+  <aside class="l_box">
+    <div class="search">
+      <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="fenlei">
+      <h2>文章分类</h2>
+      <ul>
+        {% for category in category_list %}
+          <li>
+            <a href="{{ url_for('web.info_content', category_id=category.category_id) }}"
+               name="article_category">{{ category.category_name }}
+            </a>
+          </li>
+          {% endfor %}
+      </ul>
+    </div>
+    <div class="tuijian">
+      <h2>站长推荐</h2>
+      <ul>
+        <li><a href="javascript:;">你是什么人便会遇上什么人</a></li>
+        <li><a href="javascript:;">帝国cms 列表页调用子栏目，没有则不显示栏目名称</a></li>
+        <li><a href="javascript:;">第二届 优秀个人博客模板比赛参选活动</a></li>
+        <li><a href="javascript:;">个人博客模板《绅士》后台管理</a></li>
+        <li><a href="javascript:;">你是什么人便会遇上什么人</a></li>
+        <li><a href="javascript:;">帝国cms 列表页调用子栏目，没有则不显示栏目名称</a></li>
+        <li><a href="javascript:;">第二届 优秀个人博客模板比赛参选活动</a></li>
+        <li><a href="javascript:;">个人博客模板《绅士》后台管理</a></li>
+      </ul>
+    </div>
+    <div class="tuijian">
+      <h2>点击排行</h2>
+      <ul>
+        <li><a href="javascript:;">你是什么人便会遇上什么人</a></li>
+        <li><a href="javascript:;">帝国cms 列表页调用子栏目，没有则不显示栏目名称</a></li>
+        <li><a href="javascript:;">第二届 优秀个人博客模板比赛参选活动</a></li>
+        <li><a href="javascript:;">个人博客模板《绅士》后台管理</a></li>
+        <li><a href="javascript:;">你是什么人便会遇上什么人</a></li>
+        <li><a href="javascript:;">帝国cms 列表页调用子栏目，没有则不显示栏目名称</a></li>
+        <li><a href="javascript:;">第二届 优秀个人博客模板比赛参选活动</a></li>
+        <li><a href="javascript:;">个人博客模板《绅士》后台管理</a></li>
+      </ul>
+    </div>
+    <div class="cloud">
+      <h2>标签云</h2>
+      <ul>
+        <a href="javascript:;">陌上花开</a> <a href="javascript:;">校园生活</a> <a href="javascript:;">html5</a> <a href="javascript:;">SumSung</a> <a href="javascript:;">青春</a> <a href="javascript:;">温暖</a> <a href="javascript:;">阳光</a> <a href="javascript:;">三星</a><a href="javascript:;">索尼</a> <a href="javascript:;">华维荣耀</a> <a href="javascript:;">三星</a> <a href="javascript:;">索尼</a>
+      </ul>
+    </div>
+  </aside>
+  <main class="r_box">
+    {% for article in article_list %}
+    {% if article.article_status == 0 %}
+    <li>
+      <i>
+        <a href="{{ url_for('web.article_content', article_id=article.article_id) }}">
+        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556207322877&di=000b7aef44867b51438da9c5213ecb29&imgtype=0&src=http%3A%2F%2Fimg.mukewang.com%2F5a31d8db0001337013160676.jpg">
+        </a>
+      </i>
+      <h3>
+        <a href="{{ url_for('web.article_content', article_id=article.article_id) }}">{{ article.article_title }}
+        </a>
+      </h3>
+      <p>{{ article.article_content | safe }}</p>
+    </li>
+    {% endif %}
+    {% endfor %}
+    <div class="bloginfo">
+          <ul>
+            <li class="author">作者：<a href="javascript:;">王大锤</a></li>
+            <li class="lmname"><a href="javascript:;">学无止境</a></li>
+            <li class="timer">时间：{{ request.today }}</li>
+            <li class="view">4567人已阅读</li>
+          </ul>
+    </div>
+    <div class="news_about"><strong>简介</strong>个人博客，用来做什么？我刚开始就把它当做一个我吐槽心情的地方，也就相当于一个网络记事本，写上一些关于自己生活工作中的小情小事，也会放上一些照片，音乐。每天工作回家后就能访问自己的网站，一边听着音乐，一边写写文章。</div>
+  </main>
+</article>
+{% endblock %}

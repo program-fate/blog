@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label for="article-title" class="sr-only">标题</label>
                             <input type="text" id="article-title" name="title" class="form-control"
-                                   placeholder="在此处输入标题" required autofocus autocomplete="off">
+                                   placeholder="在此处输入标题" required autofocus autocomplete="off" maxlength="50">
                         </div>
                         <div class="form-group">
                             <label for="article-content" class="sr-only">内容</label>
@@ -42,8 +42,7 @@
                         <div class="add-article-box">
                             <h2 class="add-article-box-title"><span>关键字</span></h2>
                             <div class="add-article-box-content">
-                                <input type="text" class="form-control" placeholder="请输入关键字" name="keywords"
-                                       autocomplete="off">
+                                <input type="text" class="form-control" placeholder="请输入关键字" name="keywords" autocomplete="off" maxlength="50">
                                 <span class="prompt-text">多个标签请用英文逗号,隔开。</span>
                             </div>
                         </div>
